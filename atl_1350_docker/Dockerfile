@@ -9,8 +9,8 @@ ARG gid
 ARG HOME=/home/${user}
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && \
-	apt-get upgrade --no-install-recommends -y locales tzdata sudo curl git && \
+RUN apt-get update && apt-get upgrade && \
+	apt-get install --no-install-recommends -y locales tzdata sudo curl git && \
 	apt-get install --no-install-recommends -y patch bzip2 git bash-completion doxygen && \
 	apt-get install --no-install-recommends -y build-essential libncurses-dev mtd-utils && \
 	apt-get install --no-install-recommends -y gcc-multilib g++-multilib && \
@@ -43,7 +43,10 @@ RUN curl https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/
 RUN mkdir -p /opt/altair && tar -C /opt/altair -xvf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2 && rm gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
 
 # Add PATH
-USER ${user}:${group}
+
 RUN echo "export PATH=$PATH:~/.local/bin:/opt/altair/gcc-arm-none-eabi-10-2020-q4-major/bin" >> ${HOME}/.bashrc
 RUN echo "export TERM=xterm-256color" >> ${HOME}/.bashrc
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
 
+USER ${user}:${group}
