@@ -10,12 +10,13 @@ ARG HOME=/home/${user}
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get upgrade && \
-	apt-get install --no-install-recommends -y locales tzdata sudo curl git && \
+	apt-get install --no-install-recommends -y locales tzdata sudo curl git vim && \
 	apt-get install --no-install-recommends -y patch bzip2 git bash-completion doxygen && \
 	apt-get install --no-install-recommends -y build-essential libncurses-dev mtd-utils && \
 	apt-get install --no-install-recommends -y gcc-multilib g++-multilib && \
 	apt-get install --no-install-recommends -y bison flex libboost-system-dev libboost-filesystem-dev && \
         apt-get install --no-install-recommends -y python-pip python3-pip && \
+	apt-get install --no-install-recommends -y jq libpci-dev libncursesw5-dev python-jinja2 autoconf bc && \
 	groupadd -g ${gid} ${group} && \
 	useradd --create-home --shell /bin/bash -u ${uid} -g ${gid} ${user} && \
 	locale-gen "en_US.UTF-8" && \
@@ -29,7 +30,7 @@ RUN echo "${user} ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/${user} && \
 # Install Python2
 RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py && python2 get-pip.py
 RUN pip2 install --upgrade pip
-RUN pip install gitpython kconfiglib
+RUN pip install gitpython kconfiglib Jinja2
 
 # Inatall Python3
 RUN pip3 install --upgrade pip
