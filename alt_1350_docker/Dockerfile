@@ -16,7 +16,7 @@ RUN apt-get update && apt-get upgrade && \
 	apt-get install --no-install-recommends -y gcc-multilib g++-multilib && \
 	apt-get install --no-install-recommends -y bison flex libboost-system-dev libboost-filesystem-dev && \
         apt-get install --no-install-recommends -y python-pip python3-pip && \
-	apt-get install --no-install-recommends -y jq libpci-dev libncursesw5-dev python-jinja2 autoconf bc && \
+	apt-get install --no-install-recommends -y jq libpci-dev libncursesw5-dev python-jinja2 autoconf bc ninja-build ccache && \
 	groupadd -g ${gid} ${group} && \
 	useradd --create-home --shell /bin/bash -u ${uid} -g ${gid} ${user} && \
 	locale-gen "en_US.UTF-8" && \
@@ -41,7 +41,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python2 30 && 
 
 # Download and install ARM toolchain
 RUN curl https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2 --output gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
-RUN mkdir -p /opt/altair && tar -C /opt/altair -xvf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2 && rm gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
+RUN mkdir -p /opt/tools-alt-mcu && tar -C /opt/tools-alt-mcu -xvf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2 && rm gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
 
 # Add PATH
 
